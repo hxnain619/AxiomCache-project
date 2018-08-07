@@ -34,16 +34,20 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function(event) {
   event.respondWith(
-    // Try the cache
-    caches.match(event.request).then(function(response) {
-      // Fall back to network
-      return response || fetch(event.request);
-    }).catch(function() {
-      // If both fail, show a generic fallback:
-      return caches.match('index.html');
-      // However, in reality you'd have many different
-      // fallbacks, depending on URL & headers.
-      // Eg, a fallback silhouette image for avatars.
+    caches.match(event.request)
+    .then(function(response) {
+      return response || fetch(event.request)
+      .then(function(response) {
+        return caches.open(urlsToCache)
+        .then(function(cache) {
+          cache.put(event.request, response.clone());
+          return response;
+        })
+        .catch(function() {
+
+          return caches.match('/index.html');
+        }); 
+      });
     })
   );
 });
