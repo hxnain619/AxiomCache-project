@@ -3,7 +3,8 @@ var urlsToCache = [
   'style.css',
   'index.html',
   'index.js',
-  'locate-icon.png'
+  'locate-icon.png',
+  'favicon.ico'
 ];
 
 self.addEventListener('install', function(event) {
