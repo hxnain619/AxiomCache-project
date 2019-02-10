@@ -9,7 +9,18 @@ if ('serviceWorker' in navigator) {
     });
   }
 
-  
+  var deferredPrompt= false;
+window.addEventListener("load", () => {
+    deferredPrompt = true;
+})
+window.addEventListener('beforeinstallprompt', (e) => {
+    if(deferredPrompt){
+        e.prompt();
+    }else {
+        console.log('trigger is not trigerred!!');
+    }
+
+});
   
   function GetData() {
 
